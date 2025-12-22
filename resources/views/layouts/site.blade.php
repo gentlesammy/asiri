@@ -19,7 +19,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <i class="ph-fill ph-lock-key brand-icon"></i>
                 Asiri
             </a>
@@ -35,12 +35,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#how-it-works">How it Works</a>
                     </li>
+                    @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Login</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a href="register.html" class="btn btn-sm btn-premium px-4 py-2">Get Link</a>
+                        <a href="/register" class="btn btn-sm btn-premium px-4 py-2">Get Link</a>
                     </li>
+                    @endguest
                 </ul>
             </div>
         </div>
@@ -59,9 +61,9 @@
             </div>
             <p class="text-muted small mb-0">&copy; 2024 Asiri App. All rights reserved.</p>
             <div class="mt-3">
-                <a href="privacy.html" class="text-muted mx-2 small text-decoration-none">Privacy Policy</a>
-                <a href="terms.html" class="text-muted mx-2 small text-decoration-none">Terms of Service</a>
-                <a href="about.html" class="text-muted mx-2 small text-decoration-none">About Us</a>
+                <a href="{{ route('site.privacy') }}" class="text-muted mx-2 small text-decoration-none">Privacy Policy</a>
+                <a href="{{ route('site.terms') }}" class="text-muted mx-2 small text-decoration-none">Terms of Service</a>
+                <a href="{{ route('site.about') }}" class="text-muted mx-2 small text-decoration-none">About Us</a>
             </div>
         </div>
     </footer>

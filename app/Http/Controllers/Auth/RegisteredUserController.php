@@ -19,8 +19,17 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('site.register');
     }
+
+    private function generateRep($username)
+    {
+        $firstThree = substr($username, 0, 3);
+        $randomSix = rand(100000, 999999);
+        return $firstThree . $randomSix;
+    }
+
+
 
     /**
      * Handle an incoming registration request.
@@ -32,12 +41,15 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'username' => ['required', 'string', 'lowercase',  'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'username' => $request->username,
+            'rep' => $this->generateRep($request->username),
             'password' => Hash::make($request->password),
         ]);
 

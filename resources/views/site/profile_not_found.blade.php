@@ -4,43 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Not Found | Asiri</title>
+    <title>Send Message to John Doe | Asiri</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .error-container {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .bear-image {
-            max-width: 300px;
-            filter: drop-shadow(0 0 20px var(--primary-glow));
-            margin-bottom: 2rem;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('site/style.css') }}">
 </head>
 
 <body>
@@ -48,7 +19,7 @@
     <!-- Simple Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container justify-content-center">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <i class="ph-fill ph-lock-key brand-icon"></i>
                 Asiri
             </a>
@@ -57,18 +28,21 @@
 
     <!-- Error Content -->
     <section class="container error-container text-center">
-        <div>
-            <img src="bear_search.png" alt="Bear Searching" class="bear-image img-fluid">
+        <div class="row">
+        
+            <div class="col-md-8 mx-auto py-5">
+                <img src="{{ asset('site/images/bear_search.png') }}" alt="Bear Searching" class="bear-image img-fluid pb-5">
 
-            <h1 class="fw-bold mb-3 d-none">404</h1>
-            <h2 class="fw-bold mb-4">Profile Not Found</h2>
-            <p class="text-light fs-5 mx-auto mb-5" style="max-width: 500px;">
-                The profile you are looking for has either been deactivated or does not exist.
-            </p>
+                <h1 class="fw-bold mb-3 d-none">404</h1>
+                <h2 class="fw-bold mb-4">Profile Not Found</h2>
+                <p class="text-light fs-5 mx-auto mb-5" style="max-width: 500px;">
+                    The profile you are looking for has either been deactivated or does not exist.
+                </p>
 
-            <a href="index.html" class="btn btn-premium btn-lg">
-                <i class="ph-bold ph-house me-2"></i> Go Home
-            </a>
+                <a href="/" class="btn btn-premium btn-lg">
+                    <i class="ph-bold ph-house me-2"></i> Go Home
+                </a>
+            </div>
         </div>
     </section>
 
@@ -83,6 +57,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('site/script.js') }}"></script>
 </body>
 
 </html>

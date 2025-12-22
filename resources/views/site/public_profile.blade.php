@@ -11,7 +11,7 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('site/style.css') }}">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <!-- Simple Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container justify-content-center">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <i class="ph-fill ph-lock-key brand-icon"></i>
                 Asiri
             </a>
@@ -29,7 +29,15 @@
     <!-- Hero Section -->
     <div class="profile-hero">
         <div class="profile-avatar-container">
-            <img src="default_avatar.png" alt="Profile" class="profile-avatar">
+            {{-- if user does not have profile use default else use the profile --}}
+            @if (!$user->dp)
+                <img src="{{ asset('site/images/default_avatar.png') }}" alt="Profile"
+                    class="profile-avatar">
+            @else
+                <img src="{{ asset('storage/profile_avatars/' . $user->dp) }}" alt="Profile"
+                    class="profile-avatar">
+            @endif
+        
         </div>
     </div>
 
@@ -37,12 +45,14 @@
     <section class="container py-5 mt-5">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
-
+                
                 <!-- Profile Header -->
                 <div class="text-center mb-5 mt-4">
-                    <h2 class="fw-bold mb-2">Send a secret to <span class="text-white">John Doe</span></h2>
+                    <h2 class="fw-bold mb-2">Send a secret to <span class="text-accent"> {{ucfirst($user->username) }} </span></h2>
                     <p class="text-light mx-auto" style="max-width: 400px;">
-                        "Send me something honest! I promise I won't know it's you. Ask me anything or just confess."
+                        
+                        {{ $user->bio ?? "Send Me an anonymous message" }}
+                     
                     </p>
                 </div>
 
@@ -80,7 +90,7 @@
 
                 <div class="text-center mt-5">
                     <p class="text-muted mb-3">Want to receive secret messages too?</p>
-                    <a href="register.html" class="btn btn-outline-glow btn-sm">Create Your Link</a>
+                    <a href="/register" class="btn btn-outline-glow btn-sm">Create Your Link</a>
                 </div>
 
             </div>
@@ -99,7 +109,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <!-- Custom JS -->
-    <script src="script.js"></script>
+    <script src="{{ asset('site/script.js') }}"></script>
 </body>
 
 </html>

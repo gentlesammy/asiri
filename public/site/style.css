@@ -12,6 +12,10 @@
     --glass-border: rgba(255, 255, 255, 0.08);
 }
 
+.text-accent {
+    color: var(--accent) !important;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
@@ -306,7 +310,7 @@ footer {
 /* Dashboard & Profile Styles */
 .profile-hero {
     height: 300px;
-    background: linear-gradient(to right, var(--bg-dark), rgba(123, 44, 191, 0.2)), url('auth_illustration.png');
+    background: linear-gradient(to right, var(--bg-dark), rgba(123, 44, 191, 0.2)), url('images/auth_illustration.png');
     /* Use existing illustration as banner for now */
     background-size: cover;
     background-position: center;
