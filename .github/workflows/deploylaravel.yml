@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - auth_aws  
+      - auth_aws
 
 jobs:
   deploy:
@@ -21,20 +21,8 @@ jobs:
           extensions: mbstring, xml, bcmath, curl, mysql, zip, gd, intl, redis
           coverage: none
 
-      # - name: Copy .env file
-      #   run: |
-      #     echo "${{ secrets.APP_ENV_FILE }}" > .env
-      #   if: secrets.APP_ENV_FILE != ''
-
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-dev
-
-      # - name: Generate application key
-      #   run: php artisan key:generate --ansi
-      #   if: secrets.APP_ENV_FILE != ''
-
-      # - name: Run tests
-      #   run: php artisan test
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -45,43 +33,44 @@ jobs:
           script_stop: true
           debug: true
           script: |
-            set -e  # Exit on any error
-            
-            echo "Starting deployment process..."
-            
-            cd ${{ secrets.DEPLOY_PATH }} || { echo "Failed to cd into deploy path"; exit 1; }
-            
-            echo "Current directory: $(pwd)"
-            echo "Current user: $(whoami)"
-            
-            echo "🔄 Fetching latest changes from main branch..."
-            git fetch origin main || { echo "Git fetch failed"; exit 1; }
-            
-            echo "🔄 Resetting to origin/main..."
-            git reset --hard origin/main || { echo "Git reset failed"; exit 1; }
-            
+            set -e
+
+            echo "🚀 Starting deployment process..."
+
+            cd ${{ secrets.DEPLOY_PATH }} || { echo "❌ Failed to cd into deploy path"; exit 1; }
+
+            echo "📂 Current directory: $(pwd)"
+            echo "👤 Current user: $(whoami)"
+
+            echo "🔄 Fetching latest changes from auth_aws branch..."
+            git fetch origin auth_aws
+
+            echo "🔄 Resetting to origin/auth_aws..."
+            git reset --hard origin/auth_aws
+
             echo "📦 Installing/updating Composer dependencies..."
-            /usr/local/bin/composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev || { echo "Composer install failed"; exit 1; }
-            
+            /usr/local/bin/composer install \
+              --no-interaction \
+              --prefer-dist \
+              --optimize-autoloader \
+              --no-dev
+
             echo "🔧 Running database migrations..."
-            php artisan migrate --force || { echo "Migrations failed"; exit 1; }
-            
-            echo "🗑️  Clearing application caches..."
-            php artisan cache:clear || echo "Cache clear failed (non-fatal)"
-            php artisan config:clear || echo "Config clear failed (non-fatal)"
-            php artisan route:clear || echo "Route clear failed (non-fatal)"
-            php artisan view:clear || echo "View clear failed (non-fatal)"
-            
-            echo "⚡ Optimizing application for production..."
+            php artisan migrate --force
+
+            echo "🗑️ Clearing application caches..."
+            php artisan optimize:clear || echo "Optimize clear failed (non-fatal)"
+
+            echo "⚡ Caching configuration..."
             php artisan config:cache || echo "Config cache failed (non-fatal)"
             php artisan route:cache || echo "Route cache failed (non-fatal)"
             php artisan view:cache || echo "View cache failed (non-fatal)"
             php artisan event:cache || echo "Event cache failed (non-fatal)"
-            
+
             echo "🔗 Ensuring storage link exists..."
             php artisan storage:link || echo "Storage link already exists"
-            
+
             echo "👷 Restarting queue workers..."
             php artisan queue:restart || echo "Queue restart failed (non-fatal)"
-            
-            echo "✅ Deployment script completed successfully!"
+
+            echo "✅ Deployment completed successfully!"
