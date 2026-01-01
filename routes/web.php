@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\PageController;
-use App\Http\Controllers\site\PublicProfileController;
+use App\Http\Controllers\Site\PublicProfileController;
 
 
 
