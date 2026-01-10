@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/site/style.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>

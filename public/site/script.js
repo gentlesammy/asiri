@@ -111,37 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Profile Avatar Preview
-    const avatarUpload = document.getElementById('avatarUpload');
-    const avatarPreview = document.getElementById('avatarPreview');
+    // Profile Avatar Preview - Logic moved to updateAvatar function to prevent conflicts
 
-    if (avatarUpload && avatarPreview) {
-        avatarUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    avatarPreview.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    }
 
-    // Profile Save Mock
-    const profileForm = document.getElementById('profileForm');
-    if (profileForm) {
-        profileForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = profileForm.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            btn.innerText = 'Saving...';
-            setTimeout(() => {
-                btn.innerText = originalText;
-                alert('Profile updated successfully!');
-            }, 1000);
-        });
-    }
+
 
     // Send Message Form Handling
     const sendMessageForm = document.getElementById('sendMessageForm');
@@ -327,6 +300,55 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             alert(`Report status has been updated to: ${status}`);
         }, 300);
+    };
+
+    window.updateAvatar = function () {
+        const avatarUpload = document.getElementById('avatarUpload');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const file = avatarUpload.files[0];
+
+        // If no file is selected, return (keeping original)
+        if (!file) return;
+
+        // Check if it is an image
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            avatarUpload.value = ''; // Reset input
+            return;
+        }
+
+        // Upload Logic using Fetch API
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch('/update-avatar', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.avatar) {
+                    avatarPreview.src = data.avatar;
+                    alert('Profile picture updated successfully!');
+                } else {
+                    alert('Failed to update profile picture.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the profile picture.');
+            });
     };
 
 });
