@@ -34,7 +34,7 @@
                 <img src="{{ asset('site/images/default_avatar.png') }}" alt="Profile"
                     class="profile-avatar">
             @else
-                <img src="{{ asset('storage/profile_avatars/' . $user->dp) }}" alt="Profile"
+                <img src="{{ asset('images/users/' . $user->dp) }}" alt="{{ $user->username }}"
                     class="profile-avatar">
             @endif
         
@@ -56,12 +56,26 @@
                     </p>
                 </div>
 
-                <!-- Message Form Card -->
+                <!-- Message Form Card -->  
                 <div class="auth-card mx-auto">
-                    <form id="sendMessageForm">
+                    <!-- alert showing success message: use alert dismissible instead -->
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    <form  method="POST" action="{{ route('site.send_message', $user->username) }}">
+                        @csrf
                         <div class="mb-4">
                             <label for="category" class="form-label">Category</label>
-                            <select class="form-select form-control" id="category" required>
+                            <select name="category" class="form-select form-control" id="category" required>
                                 <option value="" selected disabled>Select a category...</option>
                                 <option value="confession">Confession 🤫</option>
                                 <option value="question">Question ❓</option>
@@ -70,16 +84,26 @@
                                 <option value="compliment">Compliment ✨</option>
                                 <option value="other">Other 📝</option>
                             </select>
+                            @error('category')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="message" class="form-label">Your Message</label>
-                            <textarea class="form-control" id="message" rows="5"
+                            <textarea name="message" class="form-control" id="message" rows="5"
                                 placeholder="Type your secret message here..." required></textarea>
                             <div class="form-text mt-2">
                                 <i class="ph-bold ph-shield-check me-1 text-success"></i>
                                 100% Anonymous. Your identity is hidden.
                             </div>
+                            @error('message')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="d-grid gap-2">

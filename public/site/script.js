@@ -351,4 +351,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
+    window.copyLink = function () {
+        const link = document.getElementById('personal-link');
+        link.select();
+        document.execCommand('copy');
+        document.getElementById('copy-success').innerText = 'Link copied to clipboard!';
+        setTimeout(() => document.getElementById('copy-success').innerText = '', 3000);
+    };
+
+    window.copyLinkError = function () {
+        document.getElementById('copy-error').innerText = 'Failed to copy link.';
+        setTimeout(() => document.getElementById('copy-error').innerText = '', 3000);
+    };
+
+
+
 });

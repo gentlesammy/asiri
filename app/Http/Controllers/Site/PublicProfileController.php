@@ -21,9 +21,13 @@ class PublicProfileController extends Controller
             ]);
         }
         
+        //todo later: user exist, record visit
+        
+        
         return view('site.public_profile', compact('user')); 
 
     }
+
 
 
 

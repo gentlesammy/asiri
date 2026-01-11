@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\PageController;
 use App\Http\Controllers\Site\PublicProfileController;
 use App\Http\Controllers\users\ProfileController as UsersProfileController;
+use App\Http\Controllers\MessageController;
 
 
 
@@ -34,6 +35,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-avatar', [UsersProfileController::class, 'updateAvatar'])->name('profile.update-avatar');
     Route::patch('/profile', [UsersProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [UsersProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/messages', [MessageController::class, 'showMessageList'])->name('site.messages');
+
+});
+
+//message route
+Route::controller(MessageController::class)->group(function(){
+    Route::post('/send-message/{username}', 'sendMessage')->middleware('guest')->name('site.send_message');
 });
 
 require __DIR__.'/auth.php';

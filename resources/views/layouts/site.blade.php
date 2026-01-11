@@ -30,13 +30,14 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center gap-3">
-                    <li class="nav-item">
+                   
+                    @guest
+                     <li class="nav-item">
                         <a class="nav-link" href="#features">Features</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#how-it-works">How it Works</a>
                     </li>
-                    @guest
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
                     </li>
@@ -44,6 +45,23 @@
                         <a href="/register" class="btn btn-sm btn-premium px-4 py-2">Get Link</a>
                     </li>
                     @endguest
+                    @auth
+                     <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messages">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/logout" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-premium px-4 py-2">Logout</button>
+                        </form>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
