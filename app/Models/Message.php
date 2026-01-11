@@ -6,14 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-
-    //set fillables
     protected $fillable = [
         'user_id',
-        'category',
+        'msg_cat',
+        'content',
+        'status',
+        'reported_status',
         'is_flagged',
-        'message',
+        'sender_ip',
     ];
+
     //relationships
     public function user()
     {

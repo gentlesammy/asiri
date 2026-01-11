@@ -5,78 +5,70 @@
             <!-- Left Column: Message List -->
             <div class="col-lg-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="fw-bold m-0">Inbox</h4>
+                    <h4 class="fw-bold m-0">Inbox 
+                        <span wire:loading wire:target="setFilter" class="spinner-border spinner-border-sm ms-2 text-primary" role="status"></span>
+                    </h4>
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown">
-                            Filter
+                            data-bs-toggle="dropdown" wire:loading.attr="disabled" wire:target="setFilter">
+                            Filter: {{ ucfirst($filter) }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item active" href="#" data-filter="all">All Messages</a></li>
-                            <li><a class="dropdown-item" href="#" data-filter="unread">Unread</a></li>
-                            <li><a class="dropdown-item" href="#" data-filter="read">Read</a></li>
+                            <li><a class="dropdown-item {{ $filter == 'all' ? 'active' : '' }}" href="#" wire:click.prevent="setFilter('all')">All Messages</a></li>
+                            <li><a class="dropdown-item {{ $filter == 'unread' ? 'active' : '' }}" href="#" wire:click.prevent="setFilter('unread')">Unread</a></li>
+                            <li><a class="dropdown-item {{ $filter == 'read' ? 'active' : '' }}" href="#" wire:click.prevent="setFilter('read')">Read</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="message-list-container" id="messageList">
-                    <!-- Message Item 1 -->
-                    <div class="message-list-item active unread mb-2" onclick="selectMessage(this)" data-id="1"
-                        data-content="I really admire how you handle pressure at work. You're an inspiration!"
-                        data-time="2 hours ago" data-status="unread">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="badge bg-primary rounded-pill mb-1">Confession</span>
-                            <small class="text-muted">2h ago</small>
+                    @forelse($messages as $message)
+                        <div class="message-list-item mb-2 {{ $selectedMessage && $selectedMessage->id === $message->id ? 'active' : '' }} {{ $message->status === 'unread' ? 'unread' : '' }}" 
+                             wire:click="selectMessage({{ $message->id }})"
+                             role="button">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="badge {{ $message->msg_cat === 'confession' ? 'bg-primary' : ($message->msg_cat === 'complaint' ? 'bg-secondary' : ($message->msg_cat === 'crush' ? 'bg-danger' : 'bg-info')) }} rounded-pill mb-1">
+                                    {{ ucfirst($message->msg_cat) }}
+                                </span>
+                                <small class="text-muted">{{ $message->created_at->diffForHumans(null, true, true) }}</small>
+                            </div>
+                            <p class="mb-0 text-truncate {{ $message->status === 'unread' ? 'text-white' : 'text-muted' }} small">
+                                {{ $message->content }}
+                            </p>
                         </div>
-                        <p class="mb-0 text-truncate text-white small">I really admire how you handle pressure...</p>
-                    </div>
-
-                    <!-- Message Item 2 -->
-                    <div class="message-list-item mb-2" onclick="selectMessage(this)" data-id="2"
-                        data-content="Stop stealing my lunch from the fridge! I know it's you." data-time="1 day ago"
-                        data-status="read">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="badge bg-secondary rounded-pill mb-1">Complaint</span>
-                            <small class="text-muted">1d ago</small>
+                    @empty
+                        <div class="text-center text-muted py-4">
+                            No messages found.
                         </div>
-                        <p class="mb-0 text-truncate text-muted small">Stop stealing my lunch from the...</p>
-                    </div>
-
-                    <!-- Message Item 3 -->
-                    <div class="message-list-item unread mb-2" onclick="selectMessage(this)" data-id="3"
-                        data-content="You looked really great at the party last night." data-time="5 hours ago"
-                        data-status="unread">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="badge bg-danger rounded-pill mb-1">Secret Crush</span>
-                            <small class="text-muted">5h ago</small>
-                        </div>
-                        <p class="mb-0 text-truncate text-white small">You looked really great at the...</p>
-                    </div>
-
-                    <!-- Message Item 4 -->
-                    <div class="message-list-item mb-2" onclick="selectMessage(this)" data-id="4"
-                        data-content="Are we still on for the project meeting tomorrow?" data-time="3 days ago"
-                        data-status="read">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="badge bg-info rounded-pill mb-1">Question</span>
-                            <small class="text-muted">3d ago</small>
-                        </div>
-                        <p class="mb-0 text-truncate text-muted small">Are we still on for the project...</p>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
             <!-- Right Column: Reading Pane -->
             <div class="col-lg-8">
-                <div id="readPane">
+                <div id="readPane" class="{{ !$selectedMessage ? 'd-none' : '' }} position-relative">
+                    
+                    <!-- Loading Overlay -->
+                    <div wire:loading.flex wire:target="selectMessage" class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 justify-content-center align-items-center" style="z-index: 10; border-radius: 1rem;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    @if($selectedMessage)
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="fw-bold m-0">Reading</h4>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-danger" onclick="reportMessage()">
-                                <i class="ph-bold ph-warning"></i> Report
+                             <button class="btn btn-sm {{ $selectedMessage->reported_status === 'reported' ? 'btn-danger' : 'btn-outline-danger' }}" 
+                                    wire:click="reportMessage" 
+                                    wire:confirm="Are you sure you want to report this message? This action cannot be undone."
+                                    {{ $selectedMessage->reported_status === 'reported' ? 'disabled' : '' }}>
+                                <span wire:loading.remove wire:target="reportMessage"><i class="ph-bold ph-warning"></i> {{ $selectedMessage->reported_status === 'reported' ? 'Reported' : 'Report' }}</span>
+                                <span wire:loading wire:target="reportMessage" class="spinner-border spinner-border-sm" role="status"></span>
                             </button>
-                            <button class="btn btn-sm btn-premium" onclick="shareMessage()">
-                                <i class="ph-bold ph-share-network"></i> Share as Image
+                            <button id="downloadBtn" class="btn btn-sm btn-premium" onclick="captureAndDownload()">
+                                <i class="ph-bold ph-share-network"></i> <span id="downloadText">Share as Image</span>
+                                <span id="downloadLoader" class="spinner-border spinner-border-sm d-none" role="status"></span>
                             </button>
                         </div>
                     </div>
@@ -91,18 +83,19 @@
                         <div class="message-content-large text-center my-4">
                             <i class="ph-duotone ph-quotes text-primary fs-1 mb-3"></i>
                             <h2 class="fw-light text-white fst-italic" id="displayContent">
-                                "I really admire how you handle pressure at work. You're an inspiration!"
+                                "{{ $selectedMessage->content }}"
                             </h2>
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center mt-5">
                             <div class="d-flex align-items-center gap-2">
-                                <img src="default_avatar.png" class="rounded-circle border border-2 border-primary"
+                                <img src="{{ auth()->user()->dp ?? 'default_avatar.png' }}" class="rounded-circle border border-2 border-primary"
                                     width="40">
                                 <div>
-                                    <span class="d-block fw-bold text-white small">For: @anonymous_user</span>
-                                    <span class="d-block text-muted" style="font-size: 0.7rem;" id="displayTime">2 hours
-                                        ago</span>
+                                    <span class="d-block fw-bold text-white small">For: {{ '@' . auth()->user()->username }}</span>
+                                    <span class="d-block text-muted" style="font-size: 0.7rem;" id="displayTime">
+                                        {{ $selectedMessage->created_at->diffForHumans() }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -112,6 +105,7 @@
                             <small>asiri.app</small>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -120,24 +114,31 @@
     <!-- html2canvas -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        function selectMessage(element) {
-            // Remove active class from all items
-            const items = document.querySelectorAll('.message-list-item');
-            items.forEach(item => {
-                item.classList.remove('active');
+        function captureAndDownload() {
+            const btn = document.getElementById('downloadBtn');
+            const text = document.getElementById('downloadText');
+            const loader = document.getElementById('downloadLoader');
+
+            // Set loading state
+            btn.disabled = true;
+            text.classList.add('d-none');
+            loader.classList.remove('d-none');
+
+            const element = document.getElementById('captureArea');
+            html2canvas(element, {
+                backgroundColor: '#1a1a1a', // Ensure background is captured correctly
+                scale: 2 // Higher resolution,
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'asiri-message-{{ $selectedMessage->id ?? "share" }}.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }).finally(() => {
+                 // Reset loading state
+                 btn.disabled = false;
+                 text.classList.remove('d-none');
+                 loader.classList.add('d-none');
             });
-
-            // Add active class to the clicked item
-            element.classList.add('active');
-
-            // Update the reading pane
-            const content = element.getAttribute('data-content');
-            const time = element.getAttribute('data-time');
-            const status = element.getAttribute('data-status');
-
-            document.getElementById('displayContent').textContent = content;
-            document.getElementById('displayTime').textContent = time;
-            document.getElementById('readPane').classList.remove('d-none');
         }
     </script>
 </div>
