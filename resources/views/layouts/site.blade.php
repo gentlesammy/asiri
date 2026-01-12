@@ -12,6 +12,12 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/site/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="site/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="site/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="site/favicon/favicon-16x16.png">
+    <link rel="manifest" href="site/favicon/site.webmanifest">
+    {{-- social media meta tags --}}
+        @yield('meta_tags')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

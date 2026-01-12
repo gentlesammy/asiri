@@ -1,5 +1,39 @@
 
     @extends("layouts.site")
+    @section('meta_tags')
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="@yield('meta_title', 'Asiri - Receive Anonymous Messages')">
+        <meta name="description" content="@yield('meta_description', 'Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!')">
+        <meta name="keywords" content="@yield('meta_keywords', 'anonymous messages, anonymous feedback, secret messages, anonymous chat, feedback tool')">
+        <meta name="author" content="Your Company Name">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="@yield('og_type', 'website')">
+        <meta property="og:url" content="@yield('og_url', url()->current())">
+        <meta property="og:title" content="@yield('og_title', 'Asiri - Get Anonymous Messages')">
+        <meta property="og:description" content="@yield('og_description', 'Create your personal Asiri to receive honest, anonymous messages from anyone. Perfect for feedback, confessions, or fun Q&A!')">
+        <meta property="og:image" content="@yield('og_image', asset('site/images/auth_illustration.png'))">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="Asiri">
+        
+        <!-- Twitter -->
+        <meta property="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
+        <meta property="twitter:url" content="@yield('twitter_url', url()->current())">
+        <meta property="twitter:title" content="@yield('twitter_title', 'Asiri - Receive Anonymous Messages')">
+        <meta property="twitter:description" content="@yield('twitter_description', 'Get honest feedback with your personal anonymous messaging link. Free & easy to use!')">
+        <meta property="twitter:image" content="@yield('twitter_image', asset('site/images/auth_illustration.png'))">
+        
+        <!-- Additional Meta Tags -->
+        <meta name="robots" content="index, follow">
+        <meta name="theme-color" content="#7C3AED">
+        <meta name="application-name" content="Asiri">
+        
+        <!-- For User Profile Pages (Dynamic) -->
+        @if(isset($user) && $user instanceof \App\Models\User)
+        <meta property="profile:username" content="{{ $user->username }}">
+        @endif
+    @endsection
 
     @section("content")
 
@@ -16,7 +50,7 @@
                     tracking. Partial encryption. Total secrecy.
                 </p>
                 <div class="d-flex justify-content-center flex-wrap gap-3">
-                    <a href="register.html" class="btn btn-premium">Start Receiving Messages</a>
+                    <a href="{{ route('register') }}" class="btn btn-premium">Start Receiving Messages</a>
                     <a href="#how-it-works" class="btn btn-outline-glow">Learn More</a>
                 </div>
             </div>

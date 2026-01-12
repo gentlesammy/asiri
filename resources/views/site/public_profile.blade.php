@@ -4,7 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Message to John Doe | Asiri</title>
+    <title>Send Message to {{$user->username}} | Asiri</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('site/favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('site/favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('site/favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{asset('site/favicon/site.webmanifest')}}">
+    <!-- social meta tags -->
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Send Message to {{$user->username}} | Asiri">
+    <meta name="description" content="Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!">
+    <meta name="keywords" content="anonymous messages, anonymous feedback, secret messages, anonymous chat, feedback tool">
+    <meta name="author" content="Your Company Name">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{url()->current()}}">
+    <meta property="og:title" content="Send Message to {{$user->username}} | Asiri">
+    <meta property="og:description" content="Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!">
+    <meta property="og:image" content="{{asset('site/images/auth_illustration.png')}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Asiri">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{url()->current()}}">
+    <meta property="twitter:title" content="Send Message to {{$user->username}} | Asiri">
+    <meta property="twitter:description" content="Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!">
+    <meta property="twitter:image" content="{{asset('site/images/auth_illustration.png')}}">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#7C3AED">
+    <meta name="application-name" content="Asiri">
+    
+    <meta property="profile:username" content="{{ $user->username }}">
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
