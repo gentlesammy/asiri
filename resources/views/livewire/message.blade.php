@@ -89,7 +89,7 @@
 
                         <div class="d-flex justify-content-center align-items-center mt-5">
                             <div class="d-flex align-items-center gap-2">
-                                <img src="{{ auth()->user()->dp ?? 'default_avatar.png' }}" class="rounded-circle border border-2 border-primary"
+                                <img src="images/users/{{ auth()->user()->dp ?? 'default_avatar.png' }}" class="rounded-circle border border-2 border-primary"
                                     width="40">
                                 <div>
                                     <span class="d-block fw-bold text-white small">For: {{ '@' . auth()->user()->username }}</span>
@@ -102,7 +102,7 @@
 
                         <!-- Watermark -->
                         <div class="position-absolute bottom-0 end-0 p-3 opacity-25">
-                            <small>asiri.app</small>
+                            <small>asiri.com.ng</small>
                         </div>
                     </div>
                     @endif

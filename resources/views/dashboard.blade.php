@@ -23,8 +23,8 @@
             <div class="col-md-4">
                 <div class="stats-card">
                     <i class="ph-duotone ph-eye stats-icon text-primary"></i>
-                    <div class="stats-value">42</div>
-                    <div class="stats-label">Profile Visits</div>
+                    <div class="stats-value">  0 </div>
+                    <div class="stats-label">Profile Visits (coming soon)</div>
                 </div>
             </div>
 
@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 <div class="stats-card">
                     <i class="ph-duotone ph-envelope-open stats-icon" style="color: var(--accent);"></i>
-                    <div class="stats-value">15</div>
+                    <div class="stats-value"> {{ count(Auth::user()->messages)}} </div>
                     <div class="stats-label">Messages Received</div>
                 </div>
             </div>
@@ -41,8 +41,13 @@
             <div class="col-md-4">
                 <div class="stats-card">
                     <i class="ph-duotone ph-users-three stats-icon text-info"></i>
-                    <div class="stats-value">3</div>
-                    <div class="stats-label">Repeat Senders</div>
+                    <div class="stats-value">
+                        <!-- count number of repeat senders using ip address for current logged in user  -->
+                        {{ count(Auth::user()->messages->unique('ip_address')) }}
+
+
+                    </div>
+                    <div class="stats-label"> Senders</div>
                 </div>
             </div>
         </div>

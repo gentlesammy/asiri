@@ -14,7 +14,7 @@
     <meta name="title" content="Send Message to {{$user->username}} | Asiri">
     <meta name="description" content="Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!">
     <meta name="keywords" content="anonymous messages, anonymous feedback, secret messages, anonymous chat, feedback tool">
-    <meta name="author" content="Your Company Name">
+    <meta name="author" content="Asiri">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
