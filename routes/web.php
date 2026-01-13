@@ -25,12 +25,15 @@ Route::controller(PageController::class)->group(function(){
 Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->name('site.public_profile');  
 
 
+Route::get('/account-inactive', function () {
+    return view('account_inactive');
+})->name('account.inactive');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'status.check'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'status.check'])->group(function () {
     Route::get('/profile', [UsersProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/update-avatar', [UsersProfileController::class, 'updateAvatar'])->name('profile.update-avatar');
     Route::patch('/profile', [UsersProfileController::class, 'update'])->name('profile.update');
