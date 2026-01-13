@@ -4,9 +4,9 @@
         <!-- Stats Content -->
     <section class="container py-5 mt-5">
         <div class="row mb-5">
-            <div class="col-8 offset-md-2 text-center">
+            <div class="col-md-8 offset-md-2 text-center">
                 <h2 class="fw-bold mb-3">My Analytics</h2>
-                <p class="text-light fs-5"><strong>Copy Your Link </strong> and start sharing on your social media platforms to receive messages</p>
+                <p class="text-light fs-5"><strong>Share Your Link </strong> to your social media platforms and start receiving anonymous messages</p>
                 <!-- Add a way user can copy their personal link -->
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" value="{{url('/')}}/user/{{ Auth::user()->username}}" id="personal-link" readonly>
@@ -14,6 +14,40 @@
                     <div id="copy-success" class="text-success"></div>
                     <div id="copy-error" class="text-danger"></div>
 
+                </div>
+                
+                <!-- Social Share Buttons -->
+                <div class="mt-4">
+                    <p class="text-white-50 small mb-3">Share directly to:</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url('/user/' . Auth::user()->username)) }}" 
+                           target="_blank" class="btn btn-dark rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                           style="width: 48px; height: 48px; background-color: #1877F2; border-color: #1877F2;" title="Share on Facebook">
+                            <i class="ph-bold ph-facebook-logo fs-4 text-white"></i>
+                        </a>
+
+                        <!-- X (Twitter) -->
+                        <a href="https://twitter.com/intent/tweet?text={{ urlencode('Send me anonymous messages!') }}&url={{ urlencode(url('/user/' . Auth::user()->username)) }}" 
+                           target="_blank" class="btn btn-dark rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                           style="width: 48px; height: 48px; background-color: #000000; border-color: #333;" title="Share on X">
+                            <i class="ph-bold ph-x-logo fs-4 text-white"></i>
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(url('/user/' . Auth::user()->username)) }}" 
+                           target="_blank" class="btn btn-dark rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                           style="width: 48px; height: 48px; background-color: #0A66C2; border-color: #0A66C2;" title="Share on LinkedIn">
+                            <i class="ph-bold ph-linkedin-logo fs-4 text-white"></i>
+                        </a>
+
+                        <!-- Instagram (Copy Link workaround) -->
+                        <a href="#" onclick="copyLink(); alert('Link copied! Paste it in your Instagram Bio or Story.'); return false;" 
+                           class="btn btn-dark rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                           style="width: 48px; height: 48px; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); border: none;" title="Copy for Instagram">
+                            <i class="ph-bold ph-instagram-logo fs-4 text-white"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,7 +58,7 @@
                 <div class="stats-card">
                     <i class="ph-duotone ph-eye stats-icon text-primary"></i>
                     <div class="stats-value">  0 </div>
-                    <div class="stats-label">Profile Visits (coming soon)</div>
+                    <div class="stats-label">Profile Visits <span class="text-primary">(coming soon)</span></div>
                 </div>
             </div>
 
@@ -47,7 +81,7 @@
 
 
                     </div>
-                    <div class="stats-label"> Senders</div>
+                    <div class="stats-label"> Senders Count </div>
                 </div>
             </div>
         </div>
