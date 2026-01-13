@@ -21,6 +21,12 @@ Route::controller(PageController::class)->group(function(){
     Route::get("/privacy", "show_privacypage")->name("site.privacy");
 });
 
+// Anonymous Room Routes
+Route::get('/room', \App\Livewire\Room\RoomFeed::class)->name('room.feed');
+Route::get('/room/terms', function() {
+    return view('site.room.terms');
+})->name('room.terms');
+
 // public profile route
 Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->name('site.public_profile');  
 
