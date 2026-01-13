@@ -3,6 +3,25 @@
 @section('content')
         <!-- Stats Content -->
     <section class="container py-5 mt-5">
+        
+        @if(auth()->check() && auth()->user()->role === 'admin' && auth()->user()->status === 'active')
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card bg-dark border-secondary p-4">
+                        <h4 class="fw-bold mb-3 text-accent"><i class="ph-bold ph-shield-check me-2"></i>Admin Tools</h4>
+                        <div class="d-flex gap-3">
+                            <a href="{{ route('admin.users') }}" class="btn btn-outline-light">
+                                <i class="ph-bold ph-users me-2"></i> Manage Users
+                            </a>
+                            <a href="{{ route('admin.reports') }}" class="btn btn-outline-light">
+                                <i class="ph-bold ph-flag me-2"></i> Manage Reports
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row mb-5">
             <div class="col-md-8 offset-md-2 text-center">
                 <h2 class="fw-bold mb-3">My Analytics</h2>

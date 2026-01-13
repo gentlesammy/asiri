@@ -28,7 +28,7 @@ Route::get('/room/terms', function() {
 })->name('room.terms');
 
 // public profile route
-Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->name('site.public_profile');  
+Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->middleware('ip.blocked')->name('site.public_profile');  
 
 
 Route::get('/account-inactive', function () {
@@ -50,7 +50,12 @@ Route::middleware(['auth', 'status.check'])->group(function () {
 
 //message route
 Route::controller(MessageController::class)->group(function(){
-    Route::post('/send-message/{username}', 'sendMessage')->middleware('guest')->name('site.send_message');
+    Route::post('/send-message/{username}', 'sendMessage')->middleware(['guest', 'ip.blocked'])->name('site.send_message');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/users', \App\Livewire\Admin\UserList::class)->name('admin.users');
+    Route::get('/reports', \App\Livewire\Admin\ReportList::class)->name('admin.reports');
 });
 
 require __DIR__.'/auth.php';
