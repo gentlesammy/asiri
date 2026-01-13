@@ -59,10 +59,22 @@ class RoomFeed extends Component
         session()->flash('success', 'Secret shared anonymously!');
     }
 
+    public function deletePost($postId)
+    {
+        if (!auth()->check() || !in_array(auth()->user()->role, ['admin', 'moderator'])) {
+            return;
+        }
+
+        $post = RoomPost::findOrFail($postId);
+        $post->update(['status' => 'deleted']);
+        
+        session()->flash('success', 'Post deleted successfully.');
+    }
+
     public function render()
     {
         return view('livewire.room.room-feed', [
-            'posts' => RoomPost::latest()->get()
+            'posts' => RoomPost::where('status', 'active')->latest()->get()
         ])->extends('layouts.site')->section('content');
     }
 }

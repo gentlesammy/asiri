@@ -39,7 +39,7 @@
             <!-- Feed -->
             <div class="d-flex flex-column gap-3">
                 @forelse($posts as $post)
-                    <div class="message-card pointer-event-none cursor-default" style="cursor: default;">
+                    <div class="message-card cursor-default" style="cursor: default;">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div class="d-flex align-items-center gap-2">
                                 <div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center text-light fw-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
@@ -47,7 +47,18 @@
                                 </div>
                                 <span class="fw-bold text-light small">{{ $post->nickname }}</span>
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">{{ $post->created_at->diffForHumans(null, true, true) }}</small>
+                            <div class="d-flex align-items-center gap-2">
+                                <small class="text-muted" style="font-size: 0.75rem;">{{ $post->created_at->diffForHumans(null, true, true) }}</small>
+                                @auth
+                                    @if(in_array(auth()->user()->role, ['admin', 'moderator']))
+                                        <button wire:click="deletePost({{ $post->id }})" 
+                                                wire:confirm="Are you sure you want to delete this post?"
+                                                class="btn btn-link text-danger p-0 ms-2" style="font-size: 1rem;">
+                                            <i class="ph-bold ph-trash"></i>
+                                        </button>
+                                    @endif
+                                @endauth
+                            </div>
                         </div>
                         <p class="mb-0 text-light">{{ $post->content }}</p>
                     </div>

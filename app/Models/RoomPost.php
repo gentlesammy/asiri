@@ -8,5 +8,5 @@ class RoomPost extends Model
 {
     use \Illuminate\Database\Eloquent\Factories\HasFactory;
 
-    protected $fillable = ['content', 'nickname', 'user_identifier'];
+    protected $fillable = ['content', 'nickname', 'user_identifier', 'status'];
 }
