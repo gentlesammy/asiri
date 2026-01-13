@@ -44,6 +44,8 @@ class Message extends Component
             if ($message->status === 'unread') {
                 $message->update(['status' => 'read']);
             }
+            
+            $this->dispatch('messageSelected');
         }
     }
 

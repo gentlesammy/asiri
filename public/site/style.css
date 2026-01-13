@@ -119,6 +119,7 @@ body::after {
     margin-bottom: 1.5rem;
     background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -531,6 +532,14 @@ footer {
     padding-right: 5px;
 }
 
+@media (max-width: 991px) {
+    .message-list-container {
+        height: auto;
+        max-height: 50vh;
+        min-height: 150px;
+    }
+}
+
 .message-list-container::-webkit-scrollbar {
     width: 5px;
 }
@@ -606,6 +615,7 @@ footer {
     margin-bottom: 0.5rem;
     background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

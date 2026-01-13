@@ -140,5 +140,17 @@
                  loader.classList.add('d-none');
             });
         }
+
+        // Auto-scroll to reading pane on mobile when message is selected
+        document.addEventListener('livewire:initialized', () => {
+             Livewire.on('messageSelected', () => { // We'll need to dispatch this event from the component
+                if (window.innerWidth < 992) {
+                    const readPane = document.getElementById('readPane');
+                    if (readPane) {
+                        readPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
     </script>
 </div>
