@@ -159,7 +159,7 @@
     <!-- Footer -->
     <footer class="py-4">
         <div class="container text-center">
-            <p class="text-muted small mb-0">&copy; 2024 Asiri App. All rights reserved.</p>
+            <p class="text-muted small mb-0">&copy; {{date('Y')}} Asiri App. All rights reserved.</p>
         </div>
     </footer>
 
