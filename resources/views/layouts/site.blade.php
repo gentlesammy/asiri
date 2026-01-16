@@ -39,10 +39,10 @@
                    
                     @guest
                      <li class="nav-item">
-                        <a class="nav-link" href="#features">Features</a>
+                        <a class="nav-link" href="/#features">Features</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#how-it-works">How it Works</a>
+                        <a class="nav-link" href="/#how-it-works">How it Works</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
@@ -51,6 +51,9 @@
                         <a href="/register" class="btn btn-sm btn-premium px-4 py-2">Get Link</a>
                     </li>
                     @endguest
+                    <li class="nav-item">
+                        <a href="/room" class="nav-link">Enter Room</a>
+                    </li>
                     @auth
                      <li class="nav-item">
                         <a class="nav-link" href="/dashboard">Dashboard</a>
