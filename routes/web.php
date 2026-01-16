@@ -40,10 +40,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'status.check'])->name('dashboard');
 
 Route::middleware(['auth', 'status.check'])->group(function () {
-    Route::get('/profile', [UsersProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/update-avatar', [UsersProfileController::class, 'updateAvatar'])->name('profile.update-avatar');
-    Route::patch('/profile', [UsersProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [UsersProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', \App\Livewire\UserProfile::class)->name('profile.edit');
+
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/messages', [MessageController::class, 'showMessageList'])->name('site.messages');
 
 });
