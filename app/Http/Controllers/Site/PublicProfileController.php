@@ -8,7 +8,7 @@ use App\Models\User;
 class PublicProfileController extends Controller
 {
     //fetch a user public profile page
-    public function fetch_profile($username){
+    public function fetch_profile(Request $request, $username){
         // fetch from users where username is profile or username is rep
         $user = User::where('username', $username)
         ->orWhere('rep', $username)
@@ -21,8 +21,14 @@ class PublicProfileController extends Controller
             ]);
         }
         
-        //todo later: user exist, record visit
-        
+        // Record the profile visit
+        \App\Models\ProfileVisit::create([
+            'user_id' => $user->id,
+            'visitor_ip' => $request->ip(),
+            'visitor_user_id' => auth()->id(), // null if not authenticated
+            'user_agent' => $request->userAgent(),
+            'visited_at' => now(),
+        ]);
         
         return view('site.public_profile', compact('user')); 
 

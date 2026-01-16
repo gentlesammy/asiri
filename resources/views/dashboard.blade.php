@@ -76,8 +76,8 @@
             <div class="col-md-4">
                 <div class="stats-card">
                     <i class="ph-duotone ph-eye stats-icon text-primary"></i>
-                    <div class="stats-value">  0 </div>
-                    <div class="stats-label">Profile Visits <span class="text-primary">(coming soon)</span></div>
+                    <div class="stats-value">{{ $uniqueVisits ?? 0 }}</div>
+                    <div class="stats-label">Unique Profile Visits</div>
                 </div>
             </div>
 

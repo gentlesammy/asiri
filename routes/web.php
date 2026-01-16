@@ -36,7 +36,16 @@ Route::get('/account-inactive', function () {
 })->name('account.inactive');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = auth()->user();
+    $currentIp = request()->ip();
+    
+    // Get unique profile visits excluding user's own IP
+    $uniqueVisits = $user->profileVisits()
+        ->where('visitor_ip', '!=', $currentIp)
+        ->distinct('visitor_ip')
+        ->count('visitor_ip');
+    
+    return view('dashboard', compact('uniqueVisits'));
 })->middleware(['auth', 'verified', 'status.check'])->name('dashboard');
 
 Route::middleware(['auth', 'status.check'])->group(function () {
