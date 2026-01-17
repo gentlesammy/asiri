@@ -12,12 +12,42 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/site/style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="site/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="site/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="site/favicon/favicon-16x16.png">
-    <link rel="manifest" href="site/favicon/site.webmanifest">
-    {{-- social media meta tags --}}
-        @yield('meta_tags')
+    <link rel="apple-touch-icon" sizes="180x180" href="/site/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/site/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/site/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site/favicon/site.webmanifest">
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="@yield('meta_title', 'Asiri - Receive Anonymous Messages')">
+    <meta name="description" content="@yield('meta_description', 'Create a personal link to receive anonymous messages from friends, followers, or anyone. No registration required for senders!')">
+    <meta name="keywords" content="@yield('meta_keywords', 'anonymous messages, anonymous feedback, secret messages, anonymous chat, feedback tool')">
+    <meta name="author" content="Asiri">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="@yield('og_url', url()->current())">
+    <meta property="og:title" content="@yield('og_title', 'Asiri - Get Anonymous Messages')">
+    <meta property="og:description" content="@yield('og_description', 'Create your personal Asiri to receive honest, anonymous messages from anyone. Perfect for feedback, confessions, or fun Q&A!')">
+    <meta property="og:image" content="@yield('og_image', asset('site/images/auth_illustration.png'))">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Asiri">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
+    <meta name="twitter:url" content="@yield('twitter_url', url()->current())">
+    <meta name="twitter:title" content="@yield('twitter_title', 'Asiri - Receive Anonymous Messages')">
+    <meta name="twitter:description" content="@yield('twitter_description', 'Get honest feedback with your personal anonymous messaging link. Free & easy to use!')">
+    <meta name="twitter:image" content="@yield('twitter_image', asset('site/images/auth_illustration.png'))">
+
+    <!-- Additional -->
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#7C3AED">
+    <meta name="application-name" content="Asiri">
+
+    <!-- User profile (optional) -->
+    @isset($user)
+        <meta property="profile:username" content="{{ $user->username }}">
+    @endisset
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -59,8 +89,16 @@
                         <a class="nav-link" href="/dashboard">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/messages">Messages</a>
+                        <a class="nav-link" href="/dashboard/messages">Messages</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/polls">Polls</a>
+                    </li>
+                    @if(auth()->user()->role === 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/polls">Admin</a>
+                    </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="/profile">Profile</a>
                     </li>
@@ -76,7 +114,11 @@
         </div>
     </nav>
 
-    @yield("content")
+    @if(isset($slot))
+        {{ $slot }}
+    @else
+        @yield("content")
+    @endif
 
     <!-- Footer -->
     <footer class="py-4">
@@ -101,7 +143,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <!-- Custom JS -->
-    <script src="site/script.js"></script>
+    <script src="/site/script.js"></script>
 </body>
 
 </html>

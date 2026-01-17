@@ -4,6 +4,9 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+use Livewire\Attributes\Layout;
+
+#[Layout('layouts.site')]
 class Message extends Component
 {
     public $filter = 'all';

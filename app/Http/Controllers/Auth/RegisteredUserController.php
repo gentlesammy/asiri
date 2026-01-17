@@ -55,6 +55,11 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        // Allocating default poll units
+        $user->pollUnit()->create([
+            'balance' => 3
+        ]);
+
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));

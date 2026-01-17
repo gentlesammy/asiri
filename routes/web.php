@@ -13,7 +13,7 @@ use App\Http\Controllers\MessageController;
 
 Route::get('/', function () {
     return view('site.index');
-});
+})->name('home');
 
 Route::controller(PageController::class)->group(function(){
     Route::get("/about", "show_aboutpage")->name("site.about");
@@ -29,6 +29,7 @@ Route::get('/room/terms', function() {
 
 // public profile route
 Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->middleware('ip.blocked')->name('site.public_profile');  
+Route::get('/poll/{slug}', \App\Livewire\Public\PollVote::class)->name('poll.view');
 
 
 Route::get('/account-inactive', function () {
@@ -49,6 +50,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'status.check'])->name('dashboard');
 
 Route::middleware(['auth', 'status.check'])->group(function () {
+    Route::get('/dashboard/messages', \App\Livewire\Message::class)->name('dashboard.messages');
+    Route::get('/dashboard/polls', \App\Livewire\Dashboard\Polls::class)->name('dashboard.polls');
+    Route::get('/admin/polls', \App\Livewire\Admin\ManagePolls::class)->name('admin.polls');
+    
+    // User Profile Routes (replaces old controller routes)
     Route::get('/profile', \App\Livewire\UserProfile::class)->name('profile.edit');
 
 

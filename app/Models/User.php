@@ -62,4 +62,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProfileVisit::class, 'user_id');
     }
+
+    public function polls()
+    {
+        return $this->hasMany(Poll::class);
+    }
+
+    public function pollUnit()
+    {
+        return $this->hasOne(PollUnit::class);
+    }
 }
