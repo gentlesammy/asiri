@@ -12,6 +12,7 @@ class Polls extends Component
 {
     public $question;
     public $options = ['', '']; // Start with 2 empty options
+    public $closing_date;
 
     public function addOption()
     {
@@ -34,6 +35,7 @@ class Polls extends Component
             'question' => 'required|string|max:255',
             'options' => 'required|array|min:2|max:4',
             'options.*' => 'required|string|distinct|max:100',
+            'closing_date' => 'required|date|after:now',
         ]);
 
         $user = auth()->user();
@@ -56,7 +58,8 @@ class Polls extends Component
         $poll = $user->polls()->create([
             'question' => $this->question,
             'slug' => Str::random(10), // Short slug
-            'status' => 'active'
+            'status' => 'active',
+            'closes_at' => $this->closing_date
         ]);
 
         // Create Options
@@ -64,9 +67,16 @@ class Polls extends Component
             $poll->options()->create(['text' => $optionText]);
         }
 
-        $this->reset(['question', 'options']);
+        $this->reset(['question', 'options', 'closing_date']);
         $this->options = ['', '']; // Reset to 2 options
         session()->flash('message', 'Poll created successfully! 1 Unit deducted.');
+    }
+
+    public function expirePoll($id)
+    {
+        $poll = auth()->user()->polls()->findOrFail($id);
+        $poll->update(['status' => 'closed']);
+        session()->flash('message', 'Poll has been expired manually.');
     }
 
     public function deletePoll($id)

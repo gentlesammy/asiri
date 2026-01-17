@@ -72,6 +72,13 @@
                                             wire:confirm="Are you sure?">
                                             <i class="ph-bold ph-trash"></i>
                                         </button>
+                                        @if($poll->status !== 'canceled')
+                                            <button class="btn btn-sm btn-outline-warning" 
+                                                wire:click="cancelPoll({{ $poll->id }})"
+                                                wire:confirm="This will deactivate the poll irreversibly. Are you sure?">
+                                                <i class="ph-bold ph-prohibit"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

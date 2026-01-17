@@ -40,6 +40,13 @@
                             @error('question') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
+                         <div class="mb-3">
+                            <label class="form-label text-muted small">Closing Date</label>
+                            <input type="datetime-local" class="form-control bg-black text-white border-secondary" 
+                                wire:model="closing_date" min="{{ now()->format('Y-m-d\TH:i') }}">
+                            @error('closing_date') <span class="text-danger small">{{ $message }}</span> @enderror
+                        </div>
+
                         <label class="form-label text-muted small">Options ({{ count($options) }}/4)</label>
                         @foreach($options as $index => $option)
                             <div class="input-group mb-2">
@@ -80,21 +87,37 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="w-100">
-                                <h5 class="fw-bold text-white mb-2">{{ $poll->question }}</h5>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h5 class="fw-bold text-white mb-2">{{ $poll->question }}</h5>
+                                    @if($poll->status === 'active')
+                                         <span class="badge bg-success">Active</span>
+                                    @elseif($poll->status === 'closed')
+                                         <span class="badge bg-warning text-dark">Expired</span>
+                                    @elseif($poll->status === 'canceled')
+                                         <span class="badge bg-danger">Canceled by Admin</span>
+                                    @endif
+                                </div>
                                 <div class="mb-3">
                                     @foreach($poll->options as $option)
                                         <span class="badge bg-secondary me-1 mb-1 fw-normal">{{ $option->text }} ({{ $option->vote_count }})</span>
                                     @endforeach
                                 </div>
                                 
-                                <div class="d-flex gap-2 align-items-center">
-                                    <a href="{{ route('poll.view', $poll->slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="ph-bold ph-eye"></i> View
-                                    </a>
-                                    <!-- We will add Share PNG functionality later -->
-                                    <button class="btn btn-sm btn-outline-info" onclick="alert('Share functionality coming soon')">
-                                         <i class="ph-bold ph-share-network"></i> Share
-                                    </button>
+                                <div class="d-flex gap-2 align-items-center flex-wrap">
+                                    @if($poll->status === 'active' || $poll->status === 'closed')
+                                        <a href="{{ route('poll.view', $poll->slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="ph-bold ph-eye"></i> View
+                                        </a>
+                                    @endif
+
+                                    @if($poll->status === 'active')
+                                        <button class="btn btn-sm btn-outline-warning" 
+                                            wire:click="expirePoll({{ $poll->id }})"
+                                            wire:confirm="This will stop voting immediately. Cannot be undone.">
+                                            <i class="ph-bold ph-clock"></i> Expire
+                                        </button>
+                                    @endif
+
                                     <button class="btn btn-sm btn-outline-danger ms-auto" 
                                         wire:click="deletePoll({{ $poll->id }})"
                                         wire:confirm="Are you sure you want to delete this poll?">
@@ -103,7 +126,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-2 text-end">
+                        <div class="mt-2 text-end d-flex justify-content-between">
+                            @if($poll->closes_at)
+                                <small class="text-muted" style="font-size: 0.7rem;">Closes: {{ $poll->closes_at->format('M d, Y H:i') }}</small>
+                            @else
+                                <div></div>
+                            @endif
                             <small class="text-muted" style="font-size: 0.7rem;">Created {{ $poll->created_at->diffForHumans() }}</small>
                         </div>
                     </div>

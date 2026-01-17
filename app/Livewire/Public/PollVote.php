@@ -22,7 +22,20 @@ class PollVote extends Component
             ->with(['options', 'user'])
             ->firstOrFail();
 
-        $this->checkIfVoted();
+        // Check for expiration (Lazy update)
+        if ($this->poll->status === 'active' && $this->poll->closes_at && $this->poll->closes_at->isPast()) {
+            $this->poll->update(['status' => 'closed']);
+        }
+
+        // If canceled, we handle view in blade (hide content)
+        
+        // If closed (expired), treat as voted to show results
+        if ($this->poll->status === 'closed') {
+            $this->hasVoted = true;
+        } else {
+            $this->checkIfVoted();
+        }
+
         $this->calculateTotalVotes();
     }
 
@@ -52,6 +65,11 @@ class PollVote extends Component
 
     public function vote($optionId)
     {
+        // Block voting if not active
+        if ($this->poll->status !== 'active') {
+            return;
+        }
+
         if ($this->hasVoted) {
             return;
         }

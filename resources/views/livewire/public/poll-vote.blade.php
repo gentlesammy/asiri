@@ -20,6 +20,17 @@
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 
+                <!-- Actions Logic -->
+                @if($poll->status === 'canceled')
+                     <div class="card bg-danger bg-opacity-10 border-danger text-center p-5 mb-4">
+                        <div class="mb-3">
+                             <i class="ph-duotone ph-prohibit text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <h3 class="fw-bold text-danger">Poll Deactivated</h3>
+                        <p class="text-white-50">This poll has been deactivated by the administrator.</p>
+                    </div>
+                @else
+
                 <!-- Poll Card / Capture Area -->
                 <div id="pollCaptureArea" class="card bg-dark border-secondary position-relative overflow-hidden mb-4">
                     <!-- Background decoration (optional) -->
@@ -37,6 +48,13 @@
                             </small>
                         </div>
 
+                         @if($poll->status === 'closed')
+                             <div class="alert alert-warning text-center border-warning bg-warning bg-opacity-10 mb-4">
+                                 <i class="ph-bold ph-warning-circle me-1"></i>
+                                 <strong>Poll Ended:</strong> Voting is closed. These are the final results.
+                             </div>
+                        @endif
+
                         <!-- Question -->
                         <div class="text-center mb-5">
                             <h2 class="fw-light text-white">{{ $poll->question }}</h2>
@@ -49,7 +67,7 @@
                                     $percent = $totalVotes > 0 ? round(($option->vote_count / $totalVotes) * 100) : 0;
                                 @endphp
 
-                                @if(!$hasVoted)
+                                @if(!$hasVoted && $poll->status === 'active')
                                     <!-- Voting Button -->
                                     <button wire:click="vote({{ $option->id }})" 
                                             class="btn btn-outline-light text-start py-3 px-4 rounded-3 d-flex justify-content-between align-items-center position-relative overflow-hidden group-hover-bg"
@@ -84,6 +102,7 @@
 
                     </div>
                 </div>
+                @endif
 
                 <!-- Actions -->
                 <div class="d-flex justify-content-center gap-3">

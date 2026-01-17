@@ -1,5 +1,4 @@
-
-    @extends("layouts.site")
+@extends("layouts.site")
     @section('meta_tags')
         <!-- Primary Meta Tags -->
         <meta name="title" content="@yield('meta_title', 'Asiri - Receive Anonymous Messages')">
@@ -38,56 +37,84 @@
     @section("content")
 
     <!-- Hero Section -->
-    <section class="hero-section container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h1 class="hero-title">
-                   Someone Somewhere...<br>
-                    <span class="glow-text">has something to tell you 👀</span>
+    <section class="hero-section container text-center py-5">
+        <div class="row justify-content-center py-5">
+            <div class="col-lg-10 py-5">
+                <span class="badge bg-secondary text-accent mb-3 rounded-pill px-3 py-2 border border-secondary">
+                    <i class="ph-bold ph-star me-1"></i> New: Anonymous Polls & Rooms
+                </span>
+                <h1 class="hero-title display-3 fw-bold mb-4">
+                    Express Yourself,<br>
+                    <span class="glow-text text-primary">Anonymously.</span>
                 </h1>
-                <p class="hero-subtitle">
-                   Create your link and start receiving anonymous messages from anyone, anywhere.
+                <p class="hero-subtitle lead text-white-50 mb-5 mx-auto" style="max-width: 700px;">
+                   The ultimate platform for secret messages, public confessions, and honest opinions. 
+                   Join thousands of users sharing their thoughts freely.
                 </p>
                 <div class="d-flex justify-content-center flex-wrap gap-3">
-                    <a href="{{ route('register') }}" class="btn btn-premium">Start Receiving Messages</a>
-                    <a href="#how-it-works" class="btn btn-outline-glow">Learn More</a>
+                    <a href="{{ route('register') }}" class="btn btn-premium px-4 py-2">Get Started</a>
+                    <a href="{{ route('room.feed') }}" class="btn btn-outline-glow px-4 py-2">
+                        <i class="ph-bold ph-chats-circle me-2"></i> Visit The Room
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Our Features Section -->
     <section id="features" class="container py-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-6 text-center">
+                <h2 class="section-title fw-bold display-5">Features</h2>
+                <p class="text-white-50">What makes Asiri unique and special.</p>
+            </div>
+        </div>
         <div class="row g-4">
-            <!-- Feature 1 -->
+            <!-- Feature 1: Messages -->
             <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <i class="ph-duotone ph-mask-happy feature-icon"></i>
-                    <h3 class="feature-title">100% Anonymous</h3>
-                    <p class="feature-desc">
-                        We never reveal the identity of the sender. Receive honest feedback without the fear of
-                        judgment.
-                    </p>
+                <div class="card bg-dark border-secondary h-100 hover-lift transition-all">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-4 d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 border border-primary">
+                            <i class="ph-duotone ph-envelope-simple text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-white mb-3">Anonymous Messages</h3>
+                        <p class="text-white-50 mb-4">
+                            Create your personal inbox. Share your link on social media. Receive honest feedback, confessions, and secrets privately.
+                        </p>
+                        <a href="{{ route('register') }}" class="btn btn-sm btn-outline-primary w-100">Create Inbox</a>
+                    </div>
                 </div>
             </div>
-            <!-- Feature 2 -->
+            
+            <!-- Feature 2: The Room -->
             <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <i class="ph-duotone ph-shield-check feature-icon"></i>
-                    <h3 class="feature-title">Secure & Private</h3>
-                    <p class="feature-desc">
-                        Messages are encrypted and stored securely. Your privacy is our top priority.
-                    </p>
+                <div class="card bg-dark border-secondary h-100 hover-lift transition-all">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-4 d-inline-block p-3 rounded-circle bg-success bg-opacity-10 border border-success">
+                            <i class="ph-duotone ph-users-three text-success" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-white mb-3">The Room</h3>
+                        <p class="text-white-50 mb-4">
+                            Step into the public square. Share your thoughts with the community or read what others are saying anonymously in a public feed.
+                        </p>
+                        <a href="{{ route('room.feed') }}" class="btn btn-sm btn-outline-success w-100">Join the Conversation</a>
+                    </div>
                 </div>
             </div>
-            <!-- Feature 3 -->
+
+            <!-- Feature 3: Polls -->
             <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <i class="ph-duotone ph-paper-plane-tilt feature-icon"></i>
-                    <h3 class="feature-title">Easy Sharing</h3>
-                    <p class="feature-desc">
-                        Get your unique link instantly and share it on Instagram, Snapchat, or WhatsApp with one click.
-                    </p>
+                <div class="card bg-dark border-secondary h-100 hover-lift transition-all">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-4 d-inline-block p-3 rounded-circle bg-warning bg-opacity-10 border border-warning">
+                            <i class="ph-duotone ph-chart-bar text-warning" style="font-size: 2rem;"></i>
+                        </div>
+                        <h3 class="h4 fw-bold text-white mb-3">Anonymous Polls</h3>
+                        <p class="text-white-50 mb-4">
+                            Settling a debate? Create an anonymous poll and let the crowd vote without bias. Get honest statistics instantly.
+                        </p>
+                        <a href="{{ route('register') }}" class="btn btn-sm btn-outline-warning w-100">Create a Poll</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,7 +125,7 @@
         <div class="row justify-content-center mb-5">
             <div class="col-lg-6 text-center">
                 <h2 class="section-title fw-bold display-5">How It Works</h2>
-                <p class="text-muted">Simple steps to get started in seconds.</p>
+                <p class="text-white-50">Simple steps to get started in seconds.</p>
             </div>
         </div>
 
@@ -107,21 +134,21 @@
                 <div class="step-card p-4">
                     <span class="step-number">01</span>
                     <h4 class="mt-4 fw-bold">Create Account</h4>
-                    <p class="text-muted">Register with your username to generate your personal inbox.</p>
+                    <p class="text-white-50">Register with your username to generate your personal inbox.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="step-card p-4">
                     <span class="step-number">02</span>
                     <h4 class="mt-4 fw-bold">Share Link</h4>
-                    <p class="text-muted">Post your Asiri link on your social media stories or bios.</p>
+                    <p class="text-white-50">Post your Asiri link on your social media stories or bios.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="step-card p-4">
                     <span class="step-number">03</span>
                     <h4 class="mt-4 fw-bold">Read Secrets</h4>
-                    <p class="text-muted">Open your inbox and see what people really think about you.</p>
+                    <p class="text-white-50">Open your inbox and see what people really think about you.</p>
                 </div>
             </div>
         </div>

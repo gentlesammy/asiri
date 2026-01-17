@@ -129,11 +129,11 @@
                     Asiri
                 </a>
             </div>
-            <p class="text-muted small mb-0">&copy; {{date('Y')}} Asiri App. All rights reserved.</p>
+            <p class="text-white-50 small mb-0">&copy; {{date('Y')}} Asiri App. All rights reserved.</p>
             <div class="mt-3">
-                <a href="{{ route('site.privacy') }}" class="text-muted mx-2 small text-decoration-none">Privacy Policy</a>
-                <a href="{{ route('site.terms') }}" class="text-muted mx-2 small text-decoration-none">Terms of Service</a>
-                <a href="{{ route('site.about') }}" class="text-muted mx-2 small text-decoration-none">About Us</a>
+                <a href="{{ route('site.privacy') }}" class="text-white-50 mx-2 small text-decoration-none">Privacy Policy</a>
+                <a href="{{ route('site.terms') }}" class="text-white-50 mx-2 small text-decoration-none">Terms of Service</a>
+                <a href="{{ route('site.about') }}" class="text-white-50 mx-2 small text-decoration-none">About Us</a>
             </div>
         </div>
     </footer>

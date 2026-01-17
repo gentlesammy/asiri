@@ -34,6 +34,16 @@ class ManagePolls extends Component
         session()->flash('message', 'Poll deleted successfully.');
     }
 
+    public function cancelPoll($id)
+    {
+        $poll = Poll::findOrFail($id);
+        // Only active polls can be canceled (to differentiate from expired)
+        if ($poll->status !== 'canceled') {
+            $poll->update(['status' => 'canceled']);
+            session()->flash('message', 'Poll has been canceled/deactivated.');
+        }
+    }
+
     public function addUnits($userId)
     {
         $user = User::findOrFail($userId);
