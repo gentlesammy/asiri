@@ -29,9 +29,9 @@ class UserProfile extends Component
     }
 
     public function updatedAvatar()
-    {
+    {   
         $this->validate([
-            'avatar' => 'image|max:2048', // 2MB Max
+            'avatar' => 'image|max:4096', // 4MB Max
         ]);
         
         // Auto-save avatar immediately when file is selected

@@ -76,10 +76,10 @@
                     <!-- Capture Area for html2canvas -->
                     <div id="captureArea" class="capture-card p-5 position-relative">
                         <div class="text-center mb-4">
-                            <h3 class="fw-bold text-white mb-0" style="font-family: 'Outfit', sans-serif;">Asiri</h3>
-                            <small class="text-muted">Anonymous Messages</small>
+                            <h3 class="fw-bold text-white mb-0 text-accent" style="font-family: 'Outfit', sans-serif;">Asiri.com.ng</h3>
+                            <small class="text-mine">Anonymous Messages</small>
                         </div>
-
+                
                         <div class="message-content-large text-center my-4">
                             <i class="ph-duotone ph-quotes text-primary fs-1 mb-3"></i>
                             <h2 class="fw-light text-white fst-italic" id="displayContent">
@@ -90,9 +90,9 @@
                         <div class="d-flex justify-content-center align-items-center mt-5">
                             <div class="d-flex align-items-center gap-2">
                                 <img src="images/users/{{ auth()->user()->dp ?? 'default_avatar.png' }}" class="rounded-circle border border-2 border-primary"
-                                    width="40">
+                                    width="60">
                                 <div>
-                                    <span class="d-block fw-bold text-white small">For: {{ '@' . auth()->user()->username }}</span>
+                                    <span class="d-block fw-bold text-accent small">For: {{ '@' . auth()->user()->username }}</span>
                                     <span class="d-block text-muted" style="font-size: 0.7rem;" id="displayTime">
                                         {{ $selectedMessage->created_at->diffForHumans() }}
                                     </span>
@@ -114,6 +114,32 @@
     <!-- html2canvas -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
+        // Dynamic font sizing based on message length
+        function adjustMessageFontSize() {
+            const messageElement = document.getElementById('displayContent');
+            if (!messageElement) return;
+            
+            const textLength = messageElement.textContent.trim().length;
+            let fontSize;
+            
+            // Adjust font size based on text length
+            if (textLength < 50) {
+                fontSize = '2.5rem'; // Short messages - largest
+            } else if (textLength < 100) {
+                fontSize = '2rem'; // Medium-short messages
+            } else if (textLength < 150) {
+                fontSize = '1.7rem'; // Medium messages
+            } else if (textLength < 200) {
+                fontSize = '1.5rem'; // Medium-long messages
+            } else if (textLength < 300) {
+                fontSize = '1.3rem'; // Long messages
+            } else {
+                fontSize = '1.2rem'; // Very long messages - smallest
+            }
+            
+            messageElement.style.fontSize = fontSize;
+        }
+
         function captureAndDownload() {
             const btn = document.getElementById('downloadBtn');
             const text = document.getElementById('downloadText');
@@ -123,6 +149,9 @@
             btn.disabled = true;
             text.classList.add('d-none');
             loader.classList.remove('d-none');
+
+            // Adjust font size before capturing
+            adjustMessageFontSize();
 
             const element = document.getElementById('captureArea');
             html2canvas(element, {
@@ -144,6 +173,9 @@
         // Auto-scroll to reading pane on mobile when message is selected
         document.addEventListener('livewire:initialized', () => {
              Livewire.on('messageSelected', () => { // We'll need to dispatch this event from the component
+                // Adjust font size when message is selected
+                adjustMessageFontSize();
+                
                 if (window.innerWidth < 992) {
                     const readPane = document.getElementById('readPane');
                     if (readPane) {
@@ -152,5 +184,8 @@
                 }
             });
         });
+
+        // Initial font size adjustment on page load
+        document.addEventListener('DOMContentLoaded', adjustMessageFontSize);
     </script>
 </div>

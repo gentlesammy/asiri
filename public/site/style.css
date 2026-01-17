@@ -16,6 +16,14 @@
     color: var(--accent) !important;
 }
 
+.text-mine {
+    color: var(--primary) !important;
+}
+
+.bg-mine {
+    background-color: var(--primary) !important;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);

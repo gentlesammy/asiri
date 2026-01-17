@@ -42,12 +42,11 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <h1 class="hero-title">
-                    Speak Freely.<br>
-                    Stay <span class="glow-text">Hidden.</span>
+                   Someone Somewhere...<br>
+                    <span class="glow-text">has something to tell you 👀</span>
                 </h1>
                 <p class="hero-subtitle">
-                    The most secure way to receive anonymous messages from your friends, coworkers, and fans. No
-                    tracking. Partial encryption. Total secrecy.
+                   Create your link and start receiving anonymous messages from anyone, anywhere.
                 </p>
                 <div class="d-flex justify-content-center flex-wrap gap-3">
                     <a href="{{ route('register') }}" class="btn btn-premium">Start Receiving Messages</a>
