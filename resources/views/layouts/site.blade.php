@@ -98,6 +98,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/polls">Admin</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.chat_rooms') }}">Manage Rooms</a>
+                    </li>
                     @endif
                     <li class="nav-item">
                         <a class="nav-link" href="/profile">Profile</a>

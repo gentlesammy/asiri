@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <a href="{{ route('room.feed') }}" class="btn btn-premium px-5">
+                    <a href="{{ route('room.list') }}" class="btn btn-premium px-5">
                         <i class="ph-bold ph-arrow-left me-2"></i> Enter Room
                     </a>
                 </div>

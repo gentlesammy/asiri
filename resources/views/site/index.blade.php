@@ -53,7 +53,7 @@
                 </p>
                 <div class="d-flex justify-content-center flex-wrap gap-3">
                     <a href="{{ route('register') }}" class="btn btn-premium px-4 py-2">Get Started</a>
-                    <a href="{{ route('room.feed') }}" class="btn btn-outline-glow px-4 py-2">
+                    <a href="{{ route('room.list') }}" class="btn btn-outline-glow px-4 py-2">
                         <i class="ph-bold ph-chats-circle me-2"></i> Visit The Room
                     </a>
                 </div>
@@ -97,7 +97,7 @@
                         <p class="text-white-50 mb-4">
                             Step into the public square. Share your thoughts with the community or read what others are saying anonymously in a public feed.
                         </p>
-                        <a href="{{ route('room.feed') }}" class="btn btn-sm btn-outline-success w-100">Join the Conversation</a>
+                        <a href="{{ route('room.list') }}" class="btn btn-sm btn-outline-success w-100">Join the Conversation</a>
                     </div>
                 </div>
             </div>

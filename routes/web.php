@@ -22,10 +22,12 @@ Route::controller(PageController::class)->group(function(){
 });
 
 // Anonymous Room Routes
-Route::get('/room', \App\Livewire\Room\RoomFeed::class)->name('room.feed');
+Route::get('/room', \App\Livewire\Room\RoomList::class)->name('room.list');
 Route::get('/room/terms', function() {
     return view('site.room.terms');
 })->name('room.terms');
+Route::get('/room/{room}', \App\Livewire\Room\RoomFeed::class)->name('room.feed');
+
 
 // public profile route
 Route::get('/user/{username}', [PublicProfileController::class, 'fetch_profile'])->middleware('ip.blocked')->name('site.public_profile');  
@@ -71,6 +73,7 @@ Route::controller(MessageController::class)->group(function(){
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/users', \App\Livewire\Admin\UserList::class)->name('admin.users');
     Route::get('/reports', \App\Livewire\Admin\ReportList::class)->name('admin.reports');
+    Route::get('/chat-rooms', \App\Livewire\Admin\ManageChatRooms::class)->name('admin.chat_rooms');
 });
 
 require __DIR__.'/auth.php';
