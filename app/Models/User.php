@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(PollUnit::class);
     }
+
+    public function followedRooms()
+    {
+        return $this->belongsToMany(ChatRoom::class, 'room_followers', 'user_id', 'chat_room_id')->withTimestamps();
+    }
 }

@@ -49,6 +49,7 @@
         <meta property="profile:username" content="{{ $user->username }}">
     @endisset
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @livewireStyles
 </head>
 
 <body>
@@ -85,6 +86,7 @@
                         <a href="/room" class="nav-link">Enter Room</a>
                     </li>
                     @auth
+                    <livewire:site-navbar-notifications />
                      <li class="nav-item">
                         <a class="nav-link" href="/dashboard">Dashboard</a>
                     </li>
@@ -147,6 +149,7 @@
         crossorigin="anonymous"></script>
     <!-- Custom JS -->
     <script src="/site/script.js"></script>
+    @livewireScripts
 </body>
 
 </html>

@@ -62,6 +62,7 @@ Route::middleware(['auth', 'status.check'])->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/messages', [MessageController::class, 'showMessageList'])->name('site.messages');
+    Route::get('/notifications', \App\Livewire\Notifications::class)->name('notifications');
 
 });
 

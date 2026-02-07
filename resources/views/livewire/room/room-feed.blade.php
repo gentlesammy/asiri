@@ -4,9 +4,21 @@
             
             <!-- Header -->
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold gradient-text mb-3">
-                    {{ $room->name }} Room
-                </h2>
+                <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+                    <h2 class="display-5 fw-bold gradient-text mb-0">
+                        {{ $room->name }} Room
+                    </h2>
+                    @auth
+                        <button wire:click="toggleFollow" class="btn btn-sm {{ $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary' }} rounded-pill px-3">
+                            <i class="ph-bold {{ $isFollowing ? 'ph-bell-slash' : 'ph-bell' }} me-1"></i>
+                            {{ $isFollowing ? 'Unfollow' : 'Follow' }}
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-toggle="tooltip" title="Login to follow this room">
+                            <i class="ph-bold ph-bell me-1"></i> Follow
+                        </a>
+                    @endauth
+                </div>
                 <div class="d-inline-block px-4 py-2 rounded-pill bg-light border shadow-sm">
                     <span class="small text-muted">You are posting as: <strong class="text-primary ms-1">{{ $nickname }}</strong></span>
                 </div>

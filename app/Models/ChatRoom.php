@@ -15,4 +15,9 @@ class ChatRoom extends Model
     {
         return $this->hasMany(RoomPost::class);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'room_followers', 'chat_room_id', 'user_id')->withTimestamps();
+    }
 }
