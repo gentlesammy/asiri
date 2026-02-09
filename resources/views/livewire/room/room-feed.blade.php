@@ -42,7 +42,7 @@
                     
                     <form wire:submit.prevent="post">
                         <div class="mb-3">
-                            <textarea wire:model="content" class="form-control form-control-lg bg-light border-0" rows="3" 
+                            <textarea wire:model="content" class="form-control form-control-lg bg-dark border-0" rows="3" 
                                 placeholder="Share a secret anonymously in {{ $room->name }}... (Max 5 posts/day)" required maxlength="500" style="resize: none;"></textarea>
                             @error('content') <span class="text-danger small mt-1 d-block">{{ $message }}</span> @enderror
                         </div>

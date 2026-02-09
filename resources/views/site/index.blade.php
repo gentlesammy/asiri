@@ -118,6 +118,12 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center mb-5">
+            <div class="text-center py-5">
+                <!-- about us page link --> 
+                <a href="{{ route('site.about') }}" class="btn btn-premium px-4 py-2">About Us</a>
+            </div>
+        </div>
     </section>
 
     <!-- How It Works Section -->
