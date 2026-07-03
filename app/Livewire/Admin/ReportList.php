@@ -17,7 +17,7 @@ class ReportList extends Component
     #[Title('Admin | Report Management')]
     public function render()
     {
-        $reports = Message::where('reported_status', true)
+        $reports = Message::where('reported_status', 'reported')
             ->with(['user'])
             ->latest()
             ->paginate(10);

@@ -13,7 +13,7 @@ class RoomCleanup extends Command
      */
     protected $signature = 'room:cleanup';
 
-    protected $description = 'Deletes all anonymous room posts';
+    protected $description = 'Deletes all anonymous room posts at the end of every month';
 
     public function handle()
     {

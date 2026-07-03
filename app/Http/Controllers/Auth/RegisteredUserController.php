@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Notifications\Admin\AdminNewUserJoinedNotification;
 
 class RegisteredUserController extends Controller
 {
@@ -61,6 +62,12 @@ class RegisteredUserController extends Controller
         ]);
 
         Auth::login($user);
+
+        // Notify admins
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new AdminNewUserJoinedNotification($user));
+        }
 
         return redirect(route('dashboard', absolute: false));
     }

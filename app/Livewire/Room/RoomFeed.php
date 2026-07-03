@@ -10,6 +10,8 @@ use App\Services\IdentityGenerator;
 use App\Models\RoomPost;
 use App\Models\ChatRoom;
 use Illuminate\Support\Str;
+use App\Notifications\Admin\AdminNewRoomPostNotification;
+use App\Models\User;
 
 class RoomFeed extends Component
 {
@@ -91,6 +93,12 @@ class RoomFeed extends Component
         $followers->each(function ($user) use ($post) {
             $user->notify(new \App\Notifications\NewRoomPostNotification($post, $this->room));
         });
+
+        // Notify admins
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new AdminNewRoomPostNotification($post, $this->room));
+        }
 
         $this->content = '';
         session()->flash('success', 'Secret shared anonymously!');

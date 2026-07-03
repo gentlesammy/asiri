@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Notifications\Admin\AdminMessageReportedNotification;
+use App\Models\User;
 
 use Livewire\Attributes\Layout;
 
@@ -58,6 +60,13 @@ class Message extends Component
             $this->selectedMessage->update(['reported_status' => 'reported']);
             // Refresh the selected message instance
             $this->selectedMessage->refresh(); 
+            
+            // Notify admins
+            $admins = User::where('role', 'admin')->get();
+            foreach ($admins as $admin) {
+                $admin->notify(new AdminMessageReportedNotification($this->selectedMessage));
+            }
+
             // Optional: notify the user
             $this->dispatch('messageReported'); 
         }

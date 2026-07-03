@@ -98,10 +98,16 @@
                     </li>
                     @if(auth()->user()->role === 'admin')
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/polls">Admin</a>
+                        <a class="nav-link" href="{{ route('admin.users') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.chat_rooms') }}">Manage Rooms</a>
+                        <a class="nav-link" href="/admin/polls">Polls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.chat_rooms') }}">Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.reports') }}">Reports</a>
                     </li>
                     @endif
                     <li class="nav-item">
