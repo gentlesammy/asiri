@@ -1,0 +1,71 @@
+name: Deploy via FTP to Shared Host
+
+on:
+  push:
+    branches:
+      - main
+      - videochat
+
+jobs:
+  deploy:
+    name: FTP Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, bcmath, curl, mysql, zip, gd, intl, redis
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-dev
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install NPM dependencies & Build Assets
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          local-dir: ./
+          server-dir: ${{ secrets.FTP_SERVER_DIR || '/' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/tests/**
+            **/phpunit.xml
+            **/.env.example
+            **/.env
+            **/README.md
+            **/package-lock.json
+            **/package.json
+            **/vite.config.js
+            **/postcss.config.js
+            **/tailwind.config.js
+
+      - name: Trigger post-deployment tasks
+        run: |
+          if [ -n "${{ secrets.DEPLOY_URL }}" ] && [ -n "${{ secrets.DEPLOY_TOKEN }}" ]; then
+            echo "🚀 Triggering post-deployment tasks on the server..."
+            curl -s -I "${{ secrets.DEPLOY_URL }}?token=${{ secrets.DEPLOY_TOKEN }}"
+          else
+            echo "⚠️ DEPLOY_URL or DEPLOY_TOKEN is not configured. Skipping post-deployment trigger."
+          fi

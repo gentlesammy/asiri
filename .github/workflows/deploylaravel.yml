@@ -14,16 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: mbstring, xml, bcmath, curl, mysql, zip, gd, intl, redis
-          coverage: none
-
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-dev
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -41,6 +31,9 @@ jobs:
 
             echo "📂 Current directory: $(pwd)"
             echo "👤 Current user: $(whoami)"
+
+            echo "🚧 Putting application into maintenance mode..."
+            php artisan down || true
 
             echo "🔄 Fetching latest changes from auth_aws branch..."
             git fetch origin auth_aws
@@ -70,7 +63,19 @@ jobs:
             echo "🔗 Ensuring storage link exists..."
             php artisan storage:link || echo "Storage link already exists"
 
+            echo "🔐 Setting correct directory permissions..."
+            # Adjust 'www-data' if your web server runs as a different user (e.g., 'nginx')
+            sudo chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || echo "Ownership change skipped (may require sudo privileges)"
+            sudo chmod -R 775 storage bootstrap/cache 2>/dev/null || echo "Permission change skipped"
+
             echo "👷 Restarting queue workers..."
             php artisan queue:restart || echo "Queue restart failed (non-fatal)"
+
+            echo "🔄 Reloading PHP-FPM to clear OPcache..."
+            # Try reloading standard PHP-FPM services; adjust version if your server uses a different PHP version
+            sudo systemctl reload php8.4-fpm 2>/dev/null || sudo systemctl reload php-fpm 2>/dev/null || echo "PHP-FPM reload skipped"
+
+            echo "🚀 Bringing application out of maintenance mode..."
+            php artisan up || true
 
             echo "✅ Deployment completed successfully!"
