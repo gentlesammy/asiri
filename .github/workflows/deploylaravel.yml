@@ -25,7 +25,7 @@ jobs:
           script: |
             set -e
 
-            echo "🚀 Starting deployment process..."
+            echo "🚀 Starting deployment process... oooo"
 
             cd ${{ secrets.DEPLOY_PATH }} || { echo "❌ Failed to cd into deploy path"; exit 1; }
 
