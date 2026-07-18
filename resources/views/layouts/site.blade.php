@@ -96,10 +96,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/dashboard/polls">Polls</a>
                     </li>
+                    @if(auth()->user()->role === 'admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('video-chat.dashboard') }}">Video Chat</a>
                     </li>
-                    @if(auth()->user()->role === 'admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.users') }}">Users</a>
                     </li>

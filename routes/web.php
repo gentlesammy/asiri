@@ -64,14 +64,16 @@ Route::middleware(['auth', 'status.check'])->group(function () {
     Route::get('/messages', [MessageController::class, 'showMessageList'])->name('site.messages');
     Route::get('/notifications', \App\Livewire\Notifications::class)->name('notifications');
 
-    // Video Chat Routes
-    Route::get('/video-chat', [App\Http\Controllers\VideoChatController::class, 'index'])->name('video-chat.dashboard');
-    Route::post('/video-chat/launch', [App\Http\Controllers\VideoChatController::class, 'launch'])->name('video-chat.launch');
-    Route::get('/video-chat/join/{username}', [App\Http\Controllers\VideoChatController::class, 'join'])->name('video-chat.join');
-    Route::get('/video-chat/room/{id}', [App\Http\Controllers\VideoChatController::class, 'room'])->name('video-chat.room');
-    Route::post('/video-chat/room/{id}/signal', [App\Http\Controllers\VideoChatController::class, 'signal'])->name('video-chat.signal');
-    Route::get('/video-chat/room/{id}/poll', [App\Http\Controllers\VideoChatController::class, 'poll'])->name('video-chat.poll');
-    Route::post('/video-chat/room/{id}/end', [App\Http\Controllers\VideoChatController::class, 'end'])->name('video-chat.end');
+    // Video Chat Routes (Admin Only)
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/video-chat', [App\Http\Controllers\VideoChatController::class, 'index'])->name('video-chat.dashboard');
+        Route::post('/video-chat/launch', [App\Http\Controllers\VideoChatController::class, 'launch'])->name('video-chat.launch');
+        Route::get('/video-chat/join/{username}', [App\Http\Controllers\VideoChatController::class, 'join'])->name('video-chat.join');
+        Route::get('/video-chat/room/{id}', [App\Http\Controllers\VideoChatController::class, 'room'])->name('video-chat.room');
+        Route::post('/video-chat/room/{id}/signal', [App\Http\Controllers\VideoChatController::class, 'signal'])->name('video-chat.signal');
+        Route::get('/video-chat/room/{id}/poll', [App\Http\Controllers\VideoChatController::class, 'poll'])->name('video-chat.poll');
+        Route::post('/video-chat/room/{id}/end', [App\Http\Controllers\VideoChatController::class, 'end'])->name('video-chat.end');
+    });
 });
 
 //message route

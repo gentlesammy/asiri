@@ -1,0 +1,120 @@
+# ==============================================================================
+# 1. HTTP to HTTPS Redirect
+# ==============================================================================
+server {
+    listen 80;
+    listen [::]:80;
+    server_name asiri.com.ng www.asiri.com.ng;
+
+    # Force all traffic to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+# ==============================================================================
+# 2. HTTPS Server Block (Main Application)
+# ==============================================================================
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name asiri.com.ng www.asiri.com.ng;
+
+    # --------------------------------------------------------------------------
+    # SSL Configuration (Update paths to match where you saved your certs)
+    # --------------------------------------------------------------------------
+    ssl_certificate /etc/nginx/ssl/asiri.com.ng.pem;
+    ssl_certificate_key /etc/nginx/ssl/asiri.com.ng.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    # --------------------------------------------------------------------------
+    # Cloudflare Real IP Configuration (CRITICAL)
+    # Tells Nginx/Laravel the actual visitor IP, not Cloudflare's IP
+    # --------------------------------------------------------------------------
+    set_real_ip_from 103.21.244.0/22;
+    set_real_ip_from 103.22.200.0/22;
+    set_real_ip_from 103.31.4.0/22;
+    set_real_ip_from 104.16.0.0/13;
+    set_real_ip_from 104.24.0.0/14;
+    set_real_ip_from 108.162.192.0/18;
+    set_real_ip_from 131.0.72.0/22;
+    set_real_ip_from 141.101.64.0/18;
+    set_real_ip_from 162.158.0.0/15;
+    set_real_ip_from 172.64.0.0/13;
+    set_real_ip_from 173.245.48.0/20;
+    set_real_ip_from 188.114.96.0/20;
+    set_real_ip_from 190.93.240.0/20;
+    set_real_ip_from 197.234.240.0/22;
+    set_real_ip_from 198.41.128.0/17;
+    set_real_ip_from 2400:cb00::/32;
+    set_real_ip_from 2606:4700::/32;
+    set_real_ip_from 2803:f800::/32;
+    set_real_ip_from 2405:b500::/32;
+    set_real_ip_from 2405:8100::/32;
+    set_real_ip_from 2a06:98c0::/29;
+    set_real_ip_from 2c0f:f248::/32;
+    
+    real_ip_header X-Forwarded-For;
+    real_ip_recursive on;
+
+    # --------------------------------------------------------------------------
+    # Laravel Root & Index
+    # --------------------------------------------------------------------------
+    root /var/www/asiri_app/public; # <-- UPDATE THIS to your actual Laravel path
+    index index.php index.html;
+
+    # --------------------------------------------------------------------------
+    # Security Headers (Essential for WebRTC/Video Calling)
+    # --------------------------------------------------------------------------
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    # --------------------------------------------------------------------------
+    # Laravel Routing
+    # --------------------------------------------------------------------------
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # --------------------------------------------------------------------------
+    # PHP-FPM Configuration
+    # --------------------------------------------------------------------------
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock; # <-- UPDATE PHP VERSION if needed (e.g., php8.1 or php8.3)
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS on; # Forces Laravel to recognize the secure connection
+    }
+
+    # --------------------------------------------------------------------------
+    # Deny Access to Hidden Files (.env, .git, etc.)
+    # --------------------------------------------------------------------------
+    location ~ /\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+
+    # --------------------------------------------------------------------------
+    # OPTIONAL: WebSocket Support (For Laravel Reverb / Pusher Signaling)
+    # Video calling apps almost always need WebSockets for peer signaling.
+    # Uncomment and adjust the port if you are using Laravel Reverb/WebSockets.
+    # --------------------------------------------------------------------------
+    # location /app { 
+    #     proxy_pass http://127.0.0.1:6001;
+    #     proxy_http_version 1.1;
+    #     proxy_set_header Upgrade $http_upgrade;
+    #     proxy_set_header Connection "Upgrade";
+    #     proxy_set_header Host $host;
+    #     proxy_set_header X-Real-IP $remote_addr;
+    #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #     proxy_set_header X-Forwarded-Proto $scheme;
+    # }
+}
